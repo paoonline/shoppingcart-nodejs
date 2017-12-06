@@ -14,11 +14,13 @@ var MongoStore = require('connect-mongo')(session);
 
 var index = require('./routes/index');
 var userRoutes = require('./routes/user');
+var adminRoutes = require('./routes/admin');
 
 var app = express();
 
 mongoose.connect('localhost:27017/shopping');
 require('./config/passport');
+require('./config/passport1');
 
 // view engine setup
 app.engine('.hbs',expressHsb({defaultLayout: 'layout', extname: '.hbs'}));
@@ -41,6 +43,7 @@ app.use(session({
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function (req, res, next) {
@@ -49,6 +52,7 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use('/admin', adminRoutes);
 app.use('/user', userRoutes);
 app.use('/', index);
 

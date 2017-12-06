@@ -16,6 +16,8 @@ module.exports =  function Cart(OldCart) {
         //storedItem.item.price ราคาต่อชิ้น
     };
 
+
+
     this.reduceByOne =  function (id) {
         this.items[id].qty--;
         this.items[id].price -= this.items[id].item.price;

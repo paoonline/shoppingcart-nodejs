@@ -1,20 +1,19 @@
 var passport = require('passport');
 var passport1 = require('passport');
-var User = require('../models/user');
 var Admin = require('../models/admin');
-var LocalStrategy = require('passport-local').Strategy;
+var LocalStrategy1 = require('passport-local').Strategy;
 
-passport.serializeUser(function (user, done) {
+passport1.serializeUser(function (user, done) {
     done(null, user.id);
 });
 
-passport.deserializeUser(function (id, done) {
-    User.findById(id, function (err, user) {
+passport1.deserializeUser(function (id, done) {
+    Admin.findById(id, function (err, user) {
         done(err, user);
     });
 });
 
-passport.use('local.signup', new LocalStrategy({
+passport1.use('local.adminSignup', new LocalStrategy1({
     usernameField: 'email',
     password: 'password',
     passReqToCallback: true
@@ -29,14 +28,14 @@ passport.use('local.signup', new LocalStrategy({
         });
         return done(null, false, req.flash('error', messages));
     }
-    User.findOne({'email': email}, function (err, user) {
+    Admin.findOne({'email': email}, function (err, user) {
         if(err){
             return done(err);
         }
         if (user){
             return done(null, false, {message: 'Email is already in use.'});
         }
-        var newUser = new User();
+        var newUser = new Admin();
         newUser.email = email;
         newUser.password = newUser.encryptPassword(password);
         newUser.save(function (err, result) {
@@ -48,7 +47,8 @@ passport.use('local.signup', new LocalStrategy({
     });
 }));
 
-passport.use('local.signin', new LocalStrategy({
+
+passport1.use('local.adminSignin', new LocalStrategy1({
     usernameField: 'email',
     password: 'password',
     passReqToCallback: true
@@ -63,7 +63,7 @@ passport.use('local.signin', new LocalStrategy({
         });
         return done(null, false, req.flash('error', messages));
     }
-    User.findOne({'email': email}, function (err, user) {
+    Admin.findOne({'email': email}, function (err, user) {
         if(err){
             return done(err);
         }
@@ -77,7 +77,6 @@ passport.use('local.signin', new LocalStrategy({
     });
 
 }));
-/////////////////////
 
 
 
